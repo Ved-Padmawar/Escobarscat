@@ -1,5 +1,5 @@
 {
-    "name": "2cat2curious",
+    "name": "Escobars cat",
     "description": "",
     "dependencies": {
         "device": "*",
@@ -16,7 +16,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.0.14",
+        "target": "1.0.16",
         "targetId": "arcade"
     },
     "supportedTargets": [

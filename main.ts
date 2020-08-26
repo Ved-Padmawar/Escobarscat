@@ -1,5 +1,7 @@
 namespace SpriteKind {
     export const coin = SpriteKind.create()
+    export const flower = SpriteKind.create()
+    export const apple = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, myTiles.tile3, function (sprite, location) {
     game.over(true)
@@ -16,6 +18,78 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.coin, function (sprite, otherSpr
     info.changeScoreBy(1)
     otherSprite.destroy()
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.flower, function (sprite, otherSprite) {
+    otherSprite.destroy()
+    Bee = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Enemy)
+    animation.runImageAnimation(
+    Bee,
+    [img`
+        . . . . . . . . . . . . . . . . 
+        . . . . f f f f f f f . . . . . 
+        . . . f 1 1 1 f 1 1 1 f . . . . 
+        . . . f 1 1 1 1 1 1 1 f . . . . 
+        . . . . . 1 1 f 1 1 . . . . . . 
+        . . . . f f f f f f f . . . . . 
+        . . . f 5 5 5 f 5 5 5 f . . . . 
+        . . . f f 5 5 f 5 5 f f . . . . 
+        . . . f 5 5 5 f 5 5 5 f . . . . 
+        . . . . f f f f f f f . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `,img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . f f f f f f f . . . . . 
+        . . . f 5 5 5 f 5 5 5 f . . . . 
+        . . . f f 5 5 f 5 5 f f . . . . 
+        . . . f 5 5 5 f 5 5 5 f . . . . 
+        . . . . f f f f f f f . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `],
+    100,
+    true
+    )
+    Bee.setPosition(cat.x + 80, cat.y - 80)
+    Bee.follow(cat, 50)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    otherSprite.destroy()
+    if (cat.y < otherSprite.y) {
+        info.changeScoreBy(3)
+    } else {
+        info.changeLifeBy(-1)
+    }
+})
+let Bee: Sprite = null
 let flower: Sprite = null
 let cat: Sprite = null
 scene.setBackgroundColor(9)
@@ -58,6 +132,7 @@ tiles.setTilemap(tiles.createTilemap(hex`320010000000000000000000000000000000000
     `, [myTiles.transparency16,myTiles.tile1,sprites.dungeon.hazardLava1,myTiles.tile3,myTiles.tile4,myTiles.tile5], TileScale.Sixteen))
 cat.ay = 350
 scene.cameraFollowSprite(cat)
+info.setLife(5)
 for (let value of tiles.getTilesByType(myTiles.tile4)) {
     flower = sprites.create(img`
         . . . . . . . . . . . . . . . . 
@@ -200,28 +275,94 @@ for (let value of tiles.getTilesByType(myTiles.tile4)) {
         . . . . . . . . . . . . . . . . 
         `],
     100,
-    false
+    true
     )
     tiles.placeOnTile(flower, value)
     tiles.setTileAt(value, myTiles.transparency16)
-    for (let value of tiles.getTilesByType(myTiles.tile5)) {
-        flower = sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, SpriteKind.Player)
-    }
 }
+for (let value of tiles.getTilesByType(myTiles.tile5)) {
+    flower = sprites.create(img`
+        . . . . . . . . 
+        . . . . . . . . 
+        . . . . . . . . 
+        . . . . . . . . 
+        . b b d d b b . 
+        b 1 1 3 3 1 1 b 
+        b 1 3 5 5 3 1 b 
+        b d 3 5 5 3 d b 
+        c 1 1 d d 1 1 c 
+        c d 1 d d 1 d c 
+        . c c 7 6 c c . 
+        . . 6 7 6 . . . 
+        . . 6 6 8 8 8 6 
+        . . 6 8 7 7 7 6 
+        . . 8 7 7 7 6 . 
+        . . 8 8 8 6 . . 
+        `, SpriteKind.flower)
+    tiles.placeOnTile(flower, value)
+    tiles.setTileAt(value, myTiles.transparency16)
+}
+game.onUpdate(function () {
+    cat.setImage(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . f . . . 
+        . . . . . . . . . . . . f f f . 
+        . . . . . . . . . . . . f f 5 f 
+        . . . . . . . . . . . . f f f f 
+        f f f f f f f f f f f f f f f f 
+        . . . f f f f f f f f f . . . . 
+        . . . f f f f f f f f f . . . . 
+        . . . f . . . . . f . f . . . . 
+        . . . f . . . . . f . f . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `)
+    if (cat.vx < 0) {
+        cat.image.flipX()
+    }
+    if (cat.vy < 0) {
+        cat.setImage(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . f . . . . 
+            . . . . . . . . . . . f f f . . 
+            . . . . . . . . . . . f f 5 f . 
+            . . . . f . . . . . . f f f f . 
+            . . . . f . . . . . f f f f . . 
+            . . f f f . . . . . f f f . . . 
+            . . f . . . . . . f f f f f f f 
+            . . f . . . . . f f f f f . . . 
+            . . f f f . . f f f f f f f f . 
+            . . . . f . . f f f . . . . . . 
+            . . . . f f f f f . . . . . . . 
+            . . . . . . f f f . . . . . . . 
+            . . . . . f f . f . . . . . . . 
+            . . . . . f . . f . . . . . . . 
+            . . . . . f . . . . . . . . . . 
+            `)
+    } else if (cat.vy > 0) {
+        cat.setImage(img`
+            . . . . . . . f . . . . . . . . 
+            . . . . . . f . . . . . . . . . 
+            . . . . . f f . . . . . . . . . 
+            . . . . . f . . . . . . . . . . 
+            . . . . . f . . . . . . . . . . 
+            . . . . . f f . . . . . . . . . 
+            . . . . f f f f . . . . . . . . 
+            . . . . f f f f . . . . . . . . 
+            . . . . f f f f f . . . . . . . 
+            . . . . f . f f f f . . f . . . 
+            . . . . f . f f f f f f f f f . 
+            . . . . f . f . f f f f f f 5 f 
+            . . . . . . . . f f f f f f f f 
+            . . . . . . . . f . f . . . . . 
+            . . . . . . . . f . f . . . . . 
+            . . . . . . . . f . f f . . . . 
+            `)
+    } else {
+    	
+    }
+})
